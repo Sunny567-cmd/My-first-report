@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            height: 40px;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CGPA Calculator</h1>
+        <label for="semesters">Number of Semesters:</label>
+        <input type="number" id="semesters" required>
+        <div id="semester-inputs"></div>
+        <button onclick="calculateCGPA()">Calculate CGPA</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateCGPA() {
+            let semesters = parseInt(document.getElementById("semesters").value);
+            let totalCredits = 0;
+            let totalGradePoints = 0;
+
+            for (let i = 1; i <= semesters; i++) {
+                let credits = parseFloat(document.getElementById(`credits${i}`).value);
+                let grade = parseFloat(document.getElementById(`grade${i}`).value);
+                totalCredits += credits;
+                totalGradePoints += credits * grade;
+            }
+
+            let cgpa = totalGradePoints / totalCredits;
+            document.getElementById("result").innerText = `Your CGPA is: ${cgpa.toFixed(2)}`;
+        }
+
+        document.getElementById("semesters").addEventListener("input", function() {
+            let semesters = parseInt(document.getElementById("semesters").value);
+            let semesterInputs = document.getElementById("semester-inputs");
+            semesterInputs.innerHTML = "";
+
+            for (let i = 1; i <= semesters; i++) {
+                let semesterInput = document.createElement("div");
+                semesterInput.innerHTML = `
+                    <label for="credits${i}">Credits for Semester ${i}:</label>
+                    <input type="number" id="credits${i}" required>
+                    <label for="grade${i}">Grade for Semester ${i}:</label>
+                    <input type="number" id="grade${i}" step="0.01" required>
+                `;
+                semesterInputs.appendChild(semesterInput);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
